@@ -30,6 +30,7 @@
  */
 
 #include "extension.h"
+#include "smconnect.h"
 
 /**
  * @file extension.cpp
@@ -37,5 +38,12 @@
  */
 
 SMConnectE g_SMConnectE;		/**< Global singleton for extension's main interface */
+SMConnect::CSMConnect g_SMConnectAPI;
 
 SMEXT_LINK(&g_SMConnectE);
+
+bool SMConnectE::SDK_OnLoad(char * error, size_t maxlength, bool late)
+{
+	sharesys->AddInterface(myself, &g_SMConnectAPI);
+	return true;
+}
