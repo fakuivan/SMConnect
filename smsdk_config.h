@@ -38,12 +38,12 @@
  */
 
 /* Basic information exposed publicly */
-#define SMEXT_CONF_NAME			"Sample Extension"
-#define SMEXT_CONF_DESCRIPTION	"Sample extension to help developers"
+#define SMEXT_CONF_NAME			"SMConnect"
+#define SMEXT_CONF_DESCRIPTION	"SourcePawn language bridging tools"
 #define SMEXT_CONF_VERSION		"0.0.0.0"
-#define SMEXT_CONF_AUTHOR		"AlliedModders"
+#define SMEXT_CONF_AUTHOR		"fakuivan"
 #define SMEXT_CONF_URL			"http://www.sourcemod.net/"
-#define SMEXT_CONF_LOGTAG		"SAMPLE"
+#define SMEXT_CONF_LOGTAG		"SMCONNECT"
 #define SMEXT_CONF_LICENSE		"GPL"
 #define SMEXT_CONF_DATESTRING	__DATE__
 
