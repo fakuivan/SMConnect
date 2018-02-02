@@ -1,0 +1,6 @@
+[submodule ".libs/sourcemod"]
+	path = .libs/sourcemod
+	url = https://github.com/alliedmodders/sourcemod.git
+[submodule ".libs/mmsource"]
+	path = .libs/mmsource
+	url = https://github.com/alliedmodders/metamod-source.git
