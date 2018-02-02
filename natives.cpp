@@ -42,7 +42,7 @@ void NativeRouter::Router(void* pData, va_alist argumentList)
 	const cell_t* pParameters;
 	cell_t result;
 
-	va_start_ptr(argumentList, cell_t);
+	va_start_int(argumentList);
 	pContext = va_arg_ptr(argumentList, SourcePawn::IPluginContext*);
 	pParameters = va_arg_ptr(argumentList, const cell_t*);
 	result = (*pThis)(pContext, pParameters);
