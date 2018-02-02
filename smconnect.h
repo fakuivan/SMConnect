@@ -8,6 +8,7 @@
 namespace SMConnect {
 	class CSMConnect : public Pub::ISMConnect
 	{
+		Pub::Natives::INativeRouter* MakeNativeRouter(Pub::Natives::FAKE_NATIVE_FUNC* pYourCallback, void* pData);
 	};
 }
 

@@ -69,6 +69,7 @@ class ExtensionConfig(object):
     self.binaries = []
     self.extensions = []
     self.generated_headers = None
+    self.libffcall_root = None
     self.mms_root = None
     self.sm_root = None
 
@@ -126,6 +127,13 @@ class ExtensionConfig(object):
     if not self.mms_root or not os.path.isdir(self.mms_root):
       raise Exception('Could not find a source copy of Metamod:Source')
     self.mms_root = Normalize(self.mms_root)
+
+    if builder.options.libffcall_path:
+      self.libffcall_root = builder.options.libffcall_path
+
+    if not self.libffcall_root or not os.path.isdir(self.libffcall_root):
+      raise Exception('Could not find a source copy of libffcall')
+    self.libffcall_root = Normalize(self.libffcall_root)
 
   def configure(self):
     cxx = builder.DetectCompilers()
@@ -290,6 +298,20 @@ class ExtensionConfig(object):
       os.path.join(self.sm_root, 'sourcepawn', 'include'),
       os.path.join(self.sm_root, 'public', 'amtl', 'amtl'),
       os.path.join(self.sm_root, 'public', 'amtl'),
+    ]
+    return self.ConfigureForSMConnect(context, compiler)
+
+  def ConfigureForSMConnect(self, context, compiler):
+    libffcall_build_dir='builddir'
+    if context.target_platform in ['linux', 'windows']:
+      compiler.postlink += [
+        compiler.Dep(os.path.join(self.libffcall_root, libffcall_build_dir, 'callback', '.libs', 'libcallback.a')),
+      ]
+    compiler.cxxincludes += [
+      os.path.join(self.libffcall_root),
+      os.path.join(self.libffcall_root, libffcall_build_dir),
+      os.path.join(self.libffcall_root, 'callback'),
+      os.path.join(self.libffcall_root, 'callback', 'vacall_r'),
     ]
     return compiler
 
