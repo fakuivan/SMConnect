@@ -1,0 +1,56 @@
+language: cpp
+compiler:
+    - gcc
+
+sudo: false
+
+addons:
+    apt:
+        packages:
+        - gcc-multilib
+        - g++-multilib
+
+install:
+    - TR_REPO_DIR="$(pwd)"
+    - TR_LIBS_DIR="$TR_REPO_DIR/.libs"
+
+    - TR_LIBFFCALL_DIR="$TR_LIBS_DIR/libffcall"
+    - TR_LIBFFCALL_BUILD_DIR="$TR_LIBFFCALL_DIR/build"
+    - |
+      (
+          mkdir "$TR_LIBFFCALL_BUILD_DIR" &&
+          chmod +x "$TR_LIBFFCALL_DIR/build.sh" &&
+          "$TR_LIBFFCALL_DIR/build.sh" \
+              "$TR_LIBFFCALL_BUILD_DIR" "$TR_LIBFFCALL_DIR/repo" \
+              --host=i486-unknown-linux  CC="gcc -m32" CXX="g++ -m32"
+      )
+    - TR_LIBFFCALL_BIN_DIR="$TR_LIBFFCALL_BUILD_DIR/libffcall-$(cat "$TR_LIBFFCALL_DIR/repo/VERSION")"
+
+    - TR_HL2SDK_ROOT="$TR_REPO_DIR/../hl2sdk" && mkdir "$TR_HL2SDK_ROOT"
+      # Cloning is rather slow for each branch, cloning from a local mirror should help
+    - TR_HL2SDK_PROXY="$TR_HL2SDK_ROOT/proxy"
+    - git clone --mirror "https://github.com/alliedmodders/hl2sdk" "$TR_HL2SDK_PROXY"
+    - TR_HL2SDK_SDKS=( csgo hl2dm nucleardawn l4d2 dods l4d css tf2 insurgency sdk2013 doi )
+    - |
+      for sdk in "${TR_HL2SDK_SDKS[@]}"; do
+          git clone "$TR_HL2SDK_PROXY" -b "$sdk" "$TR_HL2SDK_ROOT/hl2sdk-$sdk"
+      done
+
+    - TR_TOOLS_AMBUILD_DIR="$TR_REPO_DIR/../ambuild"
+    - git clone "https://github.com/alliedmodders/ambuild" "$TR_TOOLS_AMBUILD_DIR"
+    - ( cd "$TR_TOOLS_AMBUILD_DIR" && python setup.py install --user )
+
+script: 
+    - |
+      TR_BUILD_DIR="$TR_REPO_DIR/build"; mkdir "$TR_BUILD_DIR" &&
+      (
+          cd "$TR_BUILD_DIR" &&
+          python "$TR_REPO_DIR/configure.py" \
+              --sm-path "$TR_LIBS_DIR/sourcemod/" \
+              --mms-path "$TR_LIBS_DIR/mmsource/" \
+              --libffcall-path "$TR_LIBFFCALL_BIN_DIR" \
+              --hl2sdk-root "$TR_HL2SDK_ROOT" \
+              --sdks=present &&
+          ambuild
+      )
+
