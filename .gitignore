@@ -36,3 +36,5 @@
 *.out
 *.app
 
+# libffcall ignore
+.libs/libffcall/build/

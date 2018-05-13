@@ -4,3 +4,6 @@
 [submodule ".libs/mmsource"]
 	path = .libs/mmsource
 	url = https://github.com/alliedmodders/metamod-source.git
+[submodule ".libs/libffcall/repo"]
+	path = .libs/libffcall/repo
+	url = https://git.savannah.gnu.org/git/libffcall.git
