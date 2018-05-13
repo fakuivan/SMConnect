@@ -40,7 +40,7 @@ install:
     - git clone "https://github.com/alliedmodders/ambuild" "$TR_TOOLS_AMBUILD_DIR"
     - ( cd "$TR_TOOLS_AMBUILD_DIR" && python setup.py install --user )
 
-script: 
+script:
     - |
       TR_BUILD_DIR="$TR_REPO_DIR/build"; mkdir "$TR_BUILD_DIR" &&
       (
